@@ -1,10 +1,16 @@
 import React from 'react'
+import { useAddress, useDisconnect, useMetamask } from '@thirdweb-dev/react'
+
 function NFTDropPage() {
+  // Authentication
+  const connectWithMetamask = useMetamask()
+  const address = useAddress()
+  const disconnect = useDisconnect()
   return (
     <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
       {/* Left */}
       <div className="bg-gradient-to-br from-cyan-800 to-rose-500 lg:col-span-4">
-        <div className="flex flex-col items-center justify-center py-2 lg:min-h-screen ">
+        <div className="flex flex-col items-center justify-center py-10 lg:min-h-screen ">
           <div className="rounded-lg bg-gradient-to-br from-yellow-400 to-purple-600 p-2">
             <img
               src="/Assets/Apes.png"
@@ -34,11 +40,21 @@ function NFTDropPage() {
             </span>{' '}
             Market Place
           </h1>
-          <button className="rounded-full bg-rose-400 px-8 py-3 text-sm font-bold text-white lg:px-8 lg:py-2 lg:text-base">
-            Sign In
+
+          <button
+            className="rounded-full bg-rose-400 px-5 py-2 text-sm font-bold text-white lg:px-8 lg:py-2 lg:text-base"
+            onClick={() => (address ? disconnect() : connectWithMetamask())}
+          >
+            {address ? 'Sign Out' : 'Sign In'}
           </button>
         </header>
         <hr className="my-3 border" />
+        {address && (
+          <p className="text-center text-sm text-rose-400">
+            You're logged in with wallet {address.substring(0, 5)}....
+            {address.substring(address.length - 5)}
+          </p>
+        )}
         {/* Content */}
         <main className=" mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
           <img
